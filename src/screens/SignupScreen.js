@@ -1,18 +1,58 @@
+import React, {useState, useContext} from 'react';
+import { View, StyleSheet} from 'react-native';
+import { Text, Input, Button} from 'react-native-elements'
+import Spacer from '../components/Spacer'
+import { Context as AuthContext } from '../context/AuthContext'
 
-import React from 'react';
-import { View, StyleSheet, Text} from 'react-native';
+const SignupScreen = ({navigation}) => {
+    const { state, signUp } = useContext(AuthContext)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-const SignupScreen = () => {
     return (
-        <Text style={{fontSize: 48 }}>
-            SignupScreen
+        <View  style={styles.container}>
+        <Spacer>
+        <Text h3>
+            Sign up for Tracker
         </Text>
+        </Spacer>
+        <Input label="Email" value={email}
+        onChangeText={newEmail => setEmail(newEmail)}
+        autoCapitalize="none"
+        autoCorrect={false}
+        />
+        <Spacer/>
+
+        <Input label ="Password" value={password} 
+        onChangeText={newPassword => setPassword(newPassword)}
+        autoCapitalize="none"
+        autoCorrect={false}
+        secureTextEntry
+        />
+
+        <Spacer>
+        <Button title ="Sign Up" 
+        onPress={ () => signUp({email, password})}/>
+        </Spacer>
+        
+        
+        </View>
     )
+}
+
+SignupScreen.navigationOptions = () => {
+    return {
+        header: () => false
+    }
 }
 
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        marginBottom: 200
+    }
 })
 
 export default SignupScreen

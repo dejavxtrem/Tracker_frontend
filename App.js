@@ -14,6 +14,7 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen'
 import TrackDetailScreen from './src/screens/TrackDetailScreen'
 import TrackListScreen from './src/screens/TrackListScreen'
 import {Provider as AuthProvider} from './src/context/AuthContext' // rename Provider as AuthProvider
+import { setNavigator } from './src/navigationRef'
 
 
 const SwitchNavigator = createSwitchNavigator({
@@ -39,7 +40,7 @@ const App =  createAppContainer(SwitchNavigator)
 export default () => {
     return (
         <AuthProvider>
-            <App/>
+            <App ref={(navigator) => { setNavigator(navigator)}}/>
         </AuthProvider>
     )
 }

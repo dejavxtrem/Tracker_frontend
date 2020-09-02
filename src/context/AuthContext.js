@@ -10,8 +10,12 @@ const authReducer = (state, action) => {
          return {...state,  errorMessage: action.payload}
         case 'signup':
          return { errorMessage: '', token: action.payload}
+        case 'signin':
+         return {...state, token: action.payload}
+        case 'clear_error_message':
+        return {...state, errorMessage: ''}
         default:
-            return state
+        return state
     }
 }
 
@@ -31,10 +35,35 @@ const signUp = (dispatch) => {
 }
 
 const signIn = (dispatch) => {
-    return ({ email, password}) => {
-        
+    return  async ({ email, password}) => {
+        try {
+            const response = await  trackerApi.post('/signin', {email, password})
+            await AsyncStorage.setItem('token', response.data.token)
+            dispatch ({type: 'signin', payload: response.data.token})
+            navigate('TrackList')
+
+        } catch (err) {
+            dispatch({ type: 'add_error', payload: 'Something went wrong with sign-in'})
+        }
     }
 }
+
+
+const clearErrorMessage = dispatch => () =>  {
+     dispatch({type: 'clear_error_message'})
+}
+
+//function to put the token back into localstorage incase the close the app and open back up
+const tryLocalSignin = dispatch => async () => {
+    const token = await AsyncStorage.getItem('token')
+    if (token) {
+        dispatch({ type: 'signin',  payload: token});
+        navigate('TrackList')
+    } else {
+        navigate('Signup')
+    }
+}
+
 
 
 const signOut = (dispatch) => {
@@ -52,6 +81,6 @@ const signOut = (dispatch) => {
 
 export const { Provider, Context } = createDataContext (
         authReducer,
-        {signIn, signOut, signUp},
+        {signIn, signOut, signUp, clearErrorMessage, tryLocalSignin },
         {token: null, errorMessage: '',}
 )

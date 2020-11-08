@@ -82,7 +82,7 @@ const signOut = dispatch =>  async () => {
 
 
 export const { Provider, Context } = createDataContext (
-        authReducer,
-        {signIn, signOut, signUp, clearErrorMessage, tryLocalSignin, signOut},
-        {token: null, errorMessage: '',}
+        authReducer, //takes in the reducer name
+        {signIn, signOut, signUp, clearErrorMessage, tryLocalSignin, signOut},// the reducer actions
+        {token: null, errorMessage: '',} // iniitial state
 )

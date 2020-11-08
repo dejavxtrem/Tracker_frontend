@@ -14,6 +14,7 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen'
 import TrackDetailScreen from './src/screens/TrackDetailScreen'
 import TrackListScreen from './src/screens/TrackListScreen'
 import {Provider as AuthProvider} from './src/context/AuthContext' // rename Provider as AuthProvider
+import {Provider as LocationProvider } from './src/context/LocationContext'
 import { setNavigator } from './src/navigationRef'
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen'
 
@@ -39,10 +40,15 @@ const SwitchNavigator = createSwitchNavigator({
 const App =  createAppContainer(SwitchNavigator)
 
 export default () => {
+
+   //Every new context provider is added as a higher order component on app.js
     return (
-        <AuthProvider>
+     <LocationProvider> 
+            <AuthProvider>
             <App ref={(navigator) => { setNavigator(navigator)}}/>
         </AuthProvider>
+        </LocationProvider>
+
     )
 }
 

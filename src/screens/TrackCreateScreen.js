@@ -1,36 +1,24 @@
 import '../_mockLocation'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { View, StyleSheet} from 'react-native';
 import Map from '../components/Map'
 import { Text } from 'react-native-elements'
-import  { SafeAreaView } from 'react-navigation'
+import  { SafeAreaView, NavigationEvents , withNavigationFocus} from 'react-navigation'
 import { requestPermissionsAsync, watchPositionAsync, Accuracy } from 'expo-location'
+import {  Context  as LocationContext } from '../context/LocationContext'
+import useLocation from '../hooks/useLocation'
+
+const TrackCreateScreen = ({isFocused }) => {
+
+const  { addLocation } = useContext(LocationContext)
 
 
-const TrackCreateScreen = () => {
+    const [err] = useLocation(isFocused, (location) => {
+        addLocation(location)
+    })
 
-const [err, setErr] = useState(null);
+   console.log(isFocused)
 
-
-const startWatching = async () => {
-    try {
-        await requestPermissionsAsync()
-        await watchPositionAsync({
-            accuracy: Accuracy.BestForNavigation,
-            timeInterval: 1000,
-            distanceInterval: 10
-        }, (location) => {
-               // console.log(location)
-        })
-
-    } catch (e) {
-        setErr(e)
-    }
-}
-
-useEffect(() => {
-    startWatching()
-}, [])
 
     return (
         <SafeAreaView forceInset={{top:'always'}}>
@@ -38,6 +26,7 @@ useEffect(() => {
             Create a Track
         </Text>
         <Map/>
+        {/* <NavigationEvents onWillBlur ={ () =>  console.log('Leaving')}/> */}
         {err ? <Text>Please enable location services</Text> : null}
         </SafeAreaView>
   
@@ -49,4 +38,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default TrackCreateScreen
+export default withNavigationFocus(TrackCreateScreen)

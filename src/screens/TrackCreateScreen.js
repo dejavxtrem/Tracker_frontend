@@ -4,17 +4,17 @@ import { View, StyleSheet} from 'react-native';
 import Map from '../components/Map'
 import { Text } from 'react-native-elements'
 import  { SafeAreaView, NavigationEvents , withNavigationFocus} from 'react-navigation'
-import { requestPermissionsAsync, watchPositionAsync, Accuracy } from 'expo-location'
 import {  Context  as LocationContext } from '../context/LocationContext'
 import useLocation from '../hooks/useLocation'
+import TrackForm from '../components/TrackForm'
 
 const TrackCreateScreen = ({isFocused }) => {
 
-const  { addLocation } = useContext(LocationContext)
+const  { state, addLocation } = useContext(LocationContext)
 
 
     const [err] = useLocation(isFocused, (location) => {
-        addLocation(location)
+        addLocation(state.recording, location)
     })
 
    console.log(isFocused)
@@ -28,6 +28,7 @@ const  { addLocation } = useContext(LocationContext)
         <Map/>
         {/* <NavigationEvents onWillBlur ={ () =>  console.log('Leaving')}/> */}
         {err ? <Text>Please enable location services</Text> : null}
+        <TrackForm/>
         </SafeAreaView>
   
     )

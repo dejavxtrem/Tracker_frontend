@@ -14,7 +14,8 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen'
 import TrackDetailScreen from './src/screens/TrackDetailScreen'
 import TrackListScreen from './src/screens/TrackListScreen'
 import {Provider as AuthProvider} from './src/context/AuthContext' // rename Provider as AuthProvider
-import {Provider as LocationProvider } from './src/context/LocationContext'
+import {Provider as LocationProvider } from './src/context/LocationContext' ///rename  provider as locationProvider
+import {Provider as TrackProvider } from './src/context/TrackContext' // rename Provider as Trackprovider
 import { setNavigator } from './src/navigationRef'
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen'
 
@@ -43,11 +44,14 @@ export default () => {
 
    //Every new context provider is added as a higher order component on app.js
     return (
-     <LocationProvider> 
+     <TrackProvider>
+        <LocationProvider> 
             <AuthProvider>
             <App ref={(navigator) => { setNavigator(navigator)}}/>
-        </AuthProvider>
+            </AuthProvider>
         </LocationProvider>
+     </TrackProvider>
+
 
     )
 }

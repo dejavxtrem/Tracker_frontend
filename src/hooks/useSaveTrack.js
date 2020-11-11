@@ -4,17 +4,21 @@ import {useContext} from  'react'
 import {Context as TrackContext} from '../context/TrackContext'
 import {Context as LocationContext} from  '../context/LocationContext'
 import { Context as AuthContext } from "../context/AuthContext"
+import { navigate } from '../navigationRef'
 
 
 export default () => {
 
 const { createTracks } = useContext(TrackContext)
-const { state: { locations, name}} = useContext(LocationContext)
+const { state: { locations, name}, resetValue} = useContext(LocationContext)
 
 
 
-const saveTrack = () => {
-    createTracks(name, locations)
+const saveTrack =  async () => {
+    await createTracks(name, locations)
+    resetValue()
+    navigate('TrackList')
+
 }
  
 return [saveTrack]
